@@ -54,7 +54,8 @@ curl -X POST http://localhost:3000/attestations \
     "attorney_name": "Sarah Chen",
     "bar_number": "CA-298371",
     "jurisdiction": "California",
-    "signature": "base64-signature..."
+    "signature": "base64-signature...",
+    "public_key": "-----BEGIN PUBLIC KEY-----..."
   }'
 ```
 

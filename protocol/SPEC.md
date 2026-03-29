@@ -66,12 +66,13 @@ The `verifications` table stores attestation records with the following columns:
 | review_date            | timestamp | Date of attorney review            |
 | attestation_statement  | text      | The attestation text               |
 | signature              | text      | Base64-encoded RSA-SHA256 signature|
+| public_key             | text      | PEM-encoded RSA public key         |
 | created_at             | timestamp | Record creation timestamp          |
 
 ## 8. API Endpoints
 
 ### `POST /attestations`
-Register a signed attestation. Required body fields: `document_hash`, `attorney_name`, `bar_number`, `jurisdiction`, `signature`. Optional: `review_date`, `attestation_statement`.
+Register a signed attestation. Required body fields: `document_hash`, `attorney_name`, `bar_number`, `jurisdiction`, `signature`, `public_key`. Optional: `review_date`, `attestation_statement`.
 
 ### `GET /attestations/:hash`
 Retrieve all attestations for a given document hash.
