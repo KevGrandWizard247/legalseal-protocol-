@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LegalSeal — Cryptographic Attorney Attestation Protocol</title>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0a0a0a;
+    color: #fff;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* --- Hero --- */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .hero-logo {
+    font-size: 3.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero-logo span { color: #00c851; }
+
+  .hero-tagline {
+    font-size: 1.15rem;
+    color: #999;
+    max-width: 520px;
+    margin-bottom: 3.5rem;
+  }
+
+  .stats {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 3.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .stat-box {
+    background: #111;
+    border: 1px solid #1e1e1e;
+    border-radius: 8px;
+    padding: 1.75rem 2rem;
+    width: 260px;
+    text-align: left;
+  }
+
+  .stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #00c851;
+    margin-bottom: 0.25rem;
+  }
+
+  .stat-label {
+    font-size: 0.875rem;
+    color: #888;
+    line-height: 1.4;
+  }
+
+  .cta-btn {
+    background: #00c851;
+    color: #0a0a0a;
+    border: none;
+    padding: 1rem 2.5rem;
+    font-size: 1.05rem;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+    text-decoration: none;
+  }
+
+  .cta-btn:hover { background: #00b548; }
+
+  /* --- Tool --- */
+  .tool {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 4rem 2rem 6rem;
+  }
+
+  .tool h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 0.35rem;
+  }
+
+  .tool-sub {
+    color: #666;
+    font-size: 0.95rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .form-group { margin-bottom: 1.5rem; }
+
+  .form-group label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #888;
+    margin-bottom: 0.5rem;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    background: #111;
+    border: 1px solid #1e1e1e;
+    border-radius: 6px;
+    padding: 0.8rem 1rem;
+    color: #fff;
+    font-size: 0.95rem;
+    font-family: inherit;
+    transition: border-color 0.2s;
+  }
+
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: #00c851;
+  }
+
+  .form-group textarea { resize: vertical; min-height: 120px; }
+
+  .form-group select { appearance: none; cursor: pointer; }
+
+  .form-group input[type="file"] {
+    padding: 0.6rem 1rem;
+    cursor: pointer;
+  }
+
+  .form-group input[type="file"]::file-selector-button {
+    background: #1e1e1e;
+    color: #ccc;
+    border: none;
+    padding: 0.4rem 1rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    margin-right: 0.75rem;
+  }
+
+  .input-divider {
+    text-align: center;
+    color: #444;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: -0.5rem 0 1.5rem;
+  }
+
+  .submit-btn {
+    width: 100%;
+    background: #00c851;
+    color: #0a0a0a;
+    border: none;
+    padding: 1rem;
+    font-size: 1.05rem;
+    font-weight: 700;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-top: 0.5rem;
+  }
+
+  .submit-btn:hover { background: #00b548; }
+  .submit-btn:disabled { background: #333; color: #666; cursor: not-allowed; }
+
+  /* --- Receipt --- */
+  .receipt {
+    display: none;
+    margin-top: 2.5rem;
+    background: #111;
+    border: 1px solid #1a3a1a;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .receipt.visible { display: block; }
+
+  .receipt-header {
+    background: #0d1f0d;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    border-bottom: 1px solid #1a3a1a;
+  }
+
+  .verified-badge {
+    background: #00c851;
+    color: #0a0a0a;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.3rem 0.65rem;
+    border-radius: 4px;
+  }
+
+  .receipt-header-text {
+    font-weight: 600;
+    font-size: 1rem;
+  }
+
+  .receipt-body { padding: 1.5rem; }
+
+  .receipt-row {
+    display: flex;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid #1a1a1a;
+    gap: 1rem;
+  }
+
+  .receipt-row:last-child { border-bottom: none; }
+
+  .receipt-label {
+    flex: 0 0 160px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #666;
+    padding-top: 0.1rem;
+  }
+
+  .receipt-value {
+    flex: 1;
+    font-size: 0.9rem;
+    color: #ccc;
+    word-break: break-all;
+  }
+
+  .receipt-value.hash {
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.8rem;
+    color: #00c851;
+  }
+
+  .download-btn {
+    width: 100%;
+    background: transparent;
+    color: #00c851;
+    border: 1px solid #00c851;
+    padding: 0.85rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 1.5rem;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .download-btn:hover { background: #00c851; color: #0a0a0a; }
+
+  /* --- Footer --- */
+  .footer {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: #333;
+    font-size: 0.8rem;
+  }
+
+  .footer a { color: #555; text-decoration: none; }
+  .footer a:hover { color: #00c851; }
+
+  /* --- Responsive --- */
+  @media (max-width: 700px) {
+    .hero-logo { font-size: 2.5rem; }
+    .hero-tagline { font-size: 1rem; }
+    .stat-box { width: 100%; }
+    .stats { gap: 1rem; }
+    .receipt-row { flex-direction: column; gap: 0.2rem; }
+    .receipt-label { flex: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-logo">Legal<span>Seal</span></div>
+  <p class="hero-tagline">Cryptographic attorney attestation for AI-generated legal output.</p>
+  <div class="stats">
+    <div class="stat-box">
+      <div class="stat-number">716+</div>
+      <div class="stat-label">Lawyers sanctioned for unverified AI output</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-number">100,000+</div>
+      <div class="stat-label">Lawyers using AI tools daily</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-number">0</div>
+      <div class="stat-label">Standards for proving human review happened</div>
+    </div>
+  </div>
+  <a href="#tool" class="cta-btn">Seal a Document</a>
+</section>
+
+<!-- Tool -->
+<section class="tool" id="tool">
+  <h2>Seal a Document</h2>
+  <p class="tool-sub">Generate a cryptographic verification receipt for your reviewed document.</p>
+
+  <form id="seal-form">
+    <div class="form-group">
+      <label>Upload Document (.txt, .docx, .pdf)</label>
+      <input type="file" id="file-input" accept=".txt,.docx,.pdf">
+    </div>
+    <div class="input-divider">or paste text directly</div>
+    <div class="form-group">
+      <label>Document Text</label>
+      <textarea id="doc-text" placeholder="Paste document content here..."></textarea>
+    </div>
+    <div class="form-group">
+      <label>Attorney Full Name</label>
+      <input type="text" id="attorney-name" placeholder="e.g. Sarah Chen" required>
+    </div>
+    <div class="form-group">
+      <label>Bar Number</label>
+      <input type="text" id="bar-number" placeholder="e.g. CA-298371" required>
+    </div>
+    <div class="form-group">
+      <label>Jurisdiction</label>
+      <select id="jurisdiction" required>
+        <option value="" disabled selected>Select state</option>
+        <option>Alabama</option><option>Alaska</option><option>Arizona</option><option>Arkansas</option>
+        <option>California</option><option>Colorado</option><option>Connecticut</option><option>Delaware</option>
+        <option>Florida</option><option>Georgia</option><option>Hawaii</option><option>Idaho</option>
+        <option>Illinois</option><option>Indiana</option><option>Iowa</option><option>Kansas</option>
+        <option>Kentucky</option><option>Louisiana</option><option>Maine</option><option>Maryland</option>
+        <option>Massachusetts</option><option>Michigan</option><option>Minnesota</option><option>Mississippi</option>
+        <option>Missouri</option><option>Montana</option><option>Nebraska</option><option>Nevada</option>
+        <option>New Hampshire</option><option>New Jersey</option><option>New Mexico</option><option>New York</option>
+        <option>North Carolina</option><option>North Dakota</option><option>Ohio</option><option>Oklahoma</option>
+        <option>Oregon</option><option>Pennsylvania</option><option>Rhode Island</option><option>South Carolina</option>
+        <option>South Dakota</option><option>Tennessee</option><option>Texas</option><option>Utah</option>
+        <option>Vermont</option><option>Virginia</option><option>Washington</option><option>West Virginia</option>
+        <option>Wisconsin</option><option>Wyoming</option><option>District of Columbia</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Attestation Statement</label>
+      <textarea id="attestation" rows="3">I have reviewed this AI-generated document and attest to its accuracy and compliance with applicable professional standards.</textarea>
+    </div>
+    <button type="submit" class="submit-btn" id="submit-btn">Generate LegalSeal</button>
+  </form>
+
+  <div class="receipt" id="receipt">
+    <div class="receipt-header">
+      <span class="verified-badge">Verified</span>
+      <span class="receipt-header-text">LegalSeal Verification Receipt</span>
+    </div>
+    <div class="receipt-body" id="receipt-body"></div>
+    <div style="padding: 0 1.5rem 1.5rem;">
+      <button class="download-btn" id="download-btn">Download Receipt (JSON)</button>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  LegalSeal Protocol v1.0 &mdash; <a href="https://github.com/KevGrandWizard247/legalseal-protocol-" target="_blank">Open Source</a>
+</footer>
+
+<script>
+(function () {
+  const form = document.getElementById('seal-form');
+  const fileInput = document.getElementById('file-input');
+  const docText = document.getElementById('doc-text');
+  const receipt = document.getElementById('receipt');
+  const receiptBody = document.getElementById('receipt-body');
+  const downloadBtn = document.getElementById('download-btn');
+  let receiptData = null;
+
+  async function sha256(text) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(text);
+    const buffer = await crypto.subtle.digest('SHA-256', data);
+    return Array.from(new Uint8Array(buffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  function readFile(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = () => reject(reader.error);
+      reader.readAsText(file);
+    });
+  }
+
+  function formatTimestamp(date) {
+    return date.toISOString().replace('T', ' ').replace(/\.\d{3}Z$/, ' UTC');
+  }
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    let content = '';
+    if (fileInput.files.length > 0) {
+      content = await readFile(fileInput.files[0]);
+    } else {
+      content = docText.value.trim();
+    }
+
+    if (!content) {
+      alert('Please upload a document or paste text.');
+      return;
+    }
+
+    const attorneyName = document.getElementById('attorney-name').value.trim();
+    const barNumber = document.getElementById('bar-number').value.trim();
+    const jurisdiction = document.getElementById('jurisdiction').value;
+    const attestation = document.getElementById('attestation').value.trim();
+
+    if (!attorneyName || !barNumber || !jurisdiction) {
+      alert('Please fill in all required fields.');
+      return;
+    }
+
+    const documentHash = await sha256(content);
+    const timestamp = new Date();
+
+    receiptData = {
+      protocol: 'LegalSeal v1.0',
+      document_hash: documentHash,
+      attorney_name: attorneyName,
+      bar_number: barNumber,
+      jurisdiction: jurisdiction,
+      attestation_statement: attestation,
+      review_date: timestamp.toISOString(),
+      sealed_at: formatTimestamp(timestamp),
+    };
+
+    const fields = [
+      ['Protocol', receiptData.protocol],
+      ['Document Hash', receiptData.document_hash, true],
+      ['Attorney', receiptData.attorney_name],
+      ['Bar Number', receiptData.bar_number],
+      ['Jurisdiction', receiptData.jurisdiction],
+      ['Statement', receiptData.attestation_statement],
+      ['Sealed At', receiptData.sealed_at],
+    ];
+
+    receiptBody.innerHTML = fields.map(([label, value, isHash]) =>
+      '<div class="receipt-row">' +
+        '<div class="receipt-label">' + label + '</div>' +
+        '<div class="receipt-value' + (isHash ? ' hash' : '') + '">' + value + '</div>' +
+      '</div>'
+    ).join('');
+
+    receipt.classList.add('visible');
+    receipt.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  downloadBtn.addEventListener('click', function () {
+    if (!receiptData) return;
+    const blob = new Blob([JSON.stringify(receiptData, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'legalseal-receipt-' + receiptData.document_hash.substring(0, 8) + '.json';
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+})();
+</script>
+
+</body>
+</html>
