@@ -4,6 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LegalSeal — Cryptographic Attorney Attestation Protocol</title>
+<meta name="description" content="LegalSeal is an open-source cryptographic attestation protocol that lets attorneys prove they reviewed AI-generated legal documents. Over 716 lawyers have been sanctioned for unverified AI output — LegalSeal creates tamper-proof verification receipts using SHA-256 hashing.">
+<link rel="canonical" href="https://legalseal.io/">
+<meta property="og:title" content="LegalSeal — Cryptographic Attorney Attestation for AI Legal Documents">
+<meta property="og:description" content="Open-source protocol for attorneys to cryptographically prove they reviewed AI-generated legal documents. Free tool using SHA-256 hashing and bar number verification.">
+<meta property="og:url" content="https://legalseal.io/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://legalseal.io/LegalSeal.png">
+<meta property="og:site_name" content="LegalSeal">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="LegalSeal — Cryptographic Attorney Attestation Protocol">
+<meta name="twitter:description" content="Prove human review of AI-generated legal documents with cryptographic attestation. Free, open-source.">
+<meta name="twitter:image" content="https://legalseal.io/LegalSeal.png">
+<meta name="robots" content="index, follow">
 <style>
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -281,7 +294,102 @@
   }
 
   .footer a { color: #555; text-decoration: none; }
-  .footer a:hover { color: #00c851; }
+  /* --- Content Sections --- */
+  .content-section {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+    border-top: 1px solid #1a1a1a;
+  }
+
+  .content-section h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: #fff;
+  }
+
+  .content-section h3 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    color: #ddd;
+  }
+
+  .content-section p {
+    color: #aaa;
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+    line-height: 1.7;
+  }
+
+  .content-section strong { color: #fff; }
+
+  .content-section a { color: #00c851; text-decoration: none; }
+  .content-section a:hover { text-decoration: underline; }
+
+  .steps {
+    list-style: none;
+    counter-reset: step;
+    padding: 0;
+    margin: 1.5rem 0;
+  }
+
+  .steps li {
+    counter-increment: step;
+    padding: 1rem 1rem 1rem 3.5rem;
+    margin-bottom: 0.75rem;
+    background: #111;
+    border: 1px solid #1e1e1e;
+    border-radius: 6px;
+    color: #bbb;
+    font-size: 0.95rem;
+    position: relative;
+  }
+
+  .steps li::before {
+    content: counter(step);
+    position: absolute;
+    left: 1.25rem;
+    top: 1rem;
+    color: #00c851;
+    font-weight: 700;
+    font-size: 1rem;
+  }
+
+  .steps li strong { color: #fff; }
+
+  .faq-item { margin-bottom: 2rem; }
+  .faq-item h3 { color: #fff; margin-top: 0; font-size: 1.05rem; }
+  .faq-item p { margin-bottom: 0; }
+
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .comparison-table th,
+  .comparison-table td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid #1e1e1e;
+  }
+
+  .comparison-table th {
+    color: #888;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+  }
+
+  .comparison-table td { color: #bbb; }
+  .comparison-table td:first-child { color: #fff; font-weight: 500; }
+  .comparison-table .yes { color: #00c851; }
+  .comparison-table .no { color: #ff4444; }
 
   /* --- Responsive --- */
   @media (max-width: 700px) {
@@ -291,14 +399,122 @@
     .stats { gap: 1rem; }
     .receipt-row { flex-direction: column; gap: 0.2rem; }
     .receipt-label { flex: none; }
+    .content-section { padding: 3rem 1.25rem; }
+    .comparison-table { font-size: 0.8rem; }
+    .comparison-table th, .comparison-table td { padding: 0.5rem; }
   }
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "LegalSeal",
+  "url": "https://legalseal.io",
+  "applicationCategory": "LegalTechnology",
+  "operatingSystem": "Web",
+  "description": "Cryptographic attorney attestation protocol for AI-generated legal documents. LegalSeal creates SHA-256 verification receipts that prove a licensed attorney reviewed AI-generated output before filing, protecting lawyers from malpractice claims and court sanctions.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD",
+    "availability": "https://schema.org/InStock"
+  },
+  "screenshot": "https://legalseal.io/LegalSeal.png",
+  "softwareVersion": "1.0",
+  "creator": {
+    "@type": "Organization",
+    "name": "LegalSeal",
+    "url": "https://legalseal.io"
+  },
+  "featureList": [
+    "SHA-256 cryptographic document hashing",
+    "Attorney bar number verification linking",
+    "Tamper-proof verification receipt generation",
+    "JSON receipt download for court submission",
+    "Open-source protocol specification"
+  ],
+  "isAccessibleForFree": true,
+  "license": "https://opensource.org/licenses/MIT"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How do I prove I reviewed AI generated legal documents?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "LegalSeal provides cryptographic attorney attestation — a SHA-256 hash of the document combined with the attorney's bar number and timestamp creates a tamper-proof verification receipt proving the attorney reviewed the AI-generated output before filing."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What protects lawyers from AI malpractice claims?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Documenting attorney review of AI output is critical. LegalSeal creates a cryptographic seal linking the attorney's bar number to the specific document they reviewed, establishing a verifiable chain of accountability that demonstrates due diligence."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I document attorney review of AI output?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "LegalSeal generates a verification receipt containing the document's SHA-256 hash, attorney name, bar number, jurisdiction, attestation statement, and timestamp. This receipt serves as cryptographic proof that a licensed attorney reviewed the document."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is there a standard for verifying AI legal documents?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The LegalSeal Protocol is an open-source standard for attorney attestation of AI-generated legal documents. It uses SHA-256 cryptographic hashing to create tamper-proof verification receipts that prove human review occurred."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I avoid sanctions for AI hallucinations in legal filings?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Over 716 lawyers have been sanctioned for unverified AI output. LegalSeal helps by requiring attorneys to formally attest they reviewed the document, creating a cryptographic record of that review that can be presented to courts as proof of due diligence."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "LegalSeal",
+  "url": "https://legalseal.io",
+  "logo": {
+    "@type": "ImageObject",
+    "url": "https://legalseal.io/LegalSeal.png"
+  },
+  "description": "Open-source cryptographic attorney attestation protocol. LegalSeal creates tamper-proof verification receipts proving licensed attorneys reviewed AI-generated legal documents before filing.",
+  "sameAs": [
+    "https://github.com/KevGrandWizard247/legalseal-protocol-"
+  ],
+  "foundingDate": "2025",
+  "knowsAbout": [
+    "Legal Technology",
+    "Cryptographic Attestation",
+    "AI-Generated Document Verification",
+    "Attorney Compliance",
+    "Legal Malpractice Prevention"
+  ]
+}
+</script>
 </head>
 <body>
 
 <!-- Hero -->
 <section class="hero">
-  <div class="hero-logo"><img src="LegalSeal.png" alt="LegalSeal" style="height: 32px; width: 32px; margin-right: 8px; vertical-align: middle;">Legal<span>Seal</span></div>
+  <h1 class="hero-logo"><img src="LegalSeal.png" alt="LegalSeal logo" width="32" height="32" style="margin-right: 8px; vertical-align: middle;">Legal<span>Seal</span></h1>
   <p class="hero-tagline">Cryptographic attorney attestation for AI-generated legal output.</p>
   <div class="stats">
     <div class="stat-box">
@@ -378,8 +594,122 @@
   </div>
 </section>
 
+<!-- What Is LegalSeal -->
+<section class="content-section" id="what-is-legalseal">
+  <h2>What Is Attorney Attestation for AI-Generated Documents?</h2>
+  <p><strong>LegalSeal is an open-source cryptographic attestation protocol that creates verifiable proof when a licensed attorney reviews an AI-generated legal document.</strong> As courts increasingly sanction lawyers for filing unverified AI output, LegalSeal provides the missing standard for documenting human review of AI-generated legal work.</p>
+  <p>The protocol works by generating a SHA-256 hash of the document content, binding it to the reviewing attorney's bar number, jurisdiction, and attestation statement, and producing a tamper-proof verification receipt. The original document is never stored — only its cryptographic fingerprint. If even a single character of the document changes after attestation, the hash will no longer match, making any post-review modification immediately detectable.</p>
+  <p>LegalSeal addresses the accountability gap created by AI legal tools like Harvey, CoCounsel, and ChatGPT. While these tools can draft contracts, motions, and briefs in seconds, there has been no standard way to prove that a human attorney actually reviewed the output before it left the firm. LegalSeal fills that gap.</p>
+</section>
+
+<!-- How It Works -->
+<section class="content-section" id="how-it-works">
+  <h2>How Does Cryptographic Legal Verification Work?</h2>
+  <p>LegalSeal uses the same SHA-256 cryptographic hashing used in digital signatures, blockchain, and secure communications. Here is how the attestation process works:</p>
+  <ol class="steps">
+    <li><strong>Upload or paste the AI-generated document.</strong> The document content is hashed locally in your browser using SHA-256. The original text never leaves your device.</li>
+    <li><strong>Enter your attorney credentials.</strong> Your full name, bar number, and jurisdiction are recorded as part of the attestation record.</li>
+    <li><strong>Sign the attestation statement.</strong> You confirm that you have reviewed the document and attest to its accuracy and compliance with professional standards.</li>
+    <li><strong>Receive your verification receipt.</strong> LegalSeal generates a JSON receipt containing the document hash, your credentials, the attestation statement, and a UTC timestamp.</li>
+    <li><strong>Store or present the receipt.</strong> The receipt can be filed alongside the document, submitted to courts as proof of review, or retained in your firm's compliance records.</li>
+  </ol>
+</section>
+
+<!-- Why Lawyers Need This -->
+<section class="content-section" id="why-lawyers-need-this">
+  <h2>Why Do Lawyers Need AI Output Verification?</h2>
+  <p><strong>Over 716 lawyers have faced sanctions, fines, or disciplinary action for filing AI-generated documents that contained fabricated case citations, hallucinated legal reasoning, or unverified factual claims.</strong> The most notable case — <em>Mata v. Avianca</em> (S.D.N.Y. 2023) — resulted in sanctions after an attorney submitted a ChatGPT-generated brief containing six fictitious case citations.</p>
+  <p>Since then, courts across the country have implemented AI disclosure requirements. Multiple federal districts and state bars now require attorneys to certify that they have verified any AI-assisted work product. The ABA's Formal Opinion 512 (2024) confirmed that lawyers have an ethical obligation to review AI-generated output before submission.</p>
+  <p>Yet until LegalSeal, there was no technical standard for proving that review actually happened. A verbal assertion of "I reviewed it" offers no verifiable evidence. LegalSeal transforms that assertion into a cryptographic proof — a timestamped, hash-linked attestation tied to a specific document and a specific attorney's bar number.</p>
+
+  <h3>The Cost of Unverified AI Output</h3>
+  <p>Sanctions for unverified AI legal work range from monetary fines to case dismissal to bar disciplinary proceedings. In <em>Park v. Kim</em> (2024), attorneys faced $5,000 sanctions for AI hallucinations. In <em>Ex parte Lee</em>, a Texas court required attorneys to certify AI non-use or verify all citations. The pattern is clear: courts are treating unverified AI output as a violation of Rule 11 (Federal) and corresponding state rules requiring reasonable inquiry before filing.</p>
+</section>
+
+<!-- Comparison -->
+<section class="content-section" id="comparison">
+  <h2>LegalSeal vs. No Verification Process</h2>
+  <p>Most law firms using AI tools have no formal process for documenting attorney review. Here is what changes with LegalSeal:</p>
+  <table class="comparison-table">
+    <thead>
+      <tr>
+        <th>Capability</th>
+        <th>Without LegalSeal</th>
+        <th>With LegalSeal</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Proof of attorney review</td>
+        <td class="no">Verbal claim only</td>
+        <td class="yes">Cryptographic receipt with hash + bar number</td>
+      </tr>
+      <tr>
+        <td>Tamper detection</td>
+        <td class="no">None</td>
+        <td class="yes">SHA-256 hash invalidates on any document change</td>
+      </tr>
+      <tr>
+        <td>Court-submittable evidence</td>
+        <td class="no">No documentation</td>
+        <td class="yes">JSON receipt with timestamp and attestation</td>
+      </tr>
+      <tr>
+        <td>Bar number linked to review</td>
+        <td class="no">No record</td>
+        <td class="yes">Attorney identity bound to document hash</td>
+      </tr>
+      <tr>
+        <td>Compliance with AI disclosure rules</td>
+        <td class="no">Manual, inconsistent</td>
+        <td class="yes">Standardized protocol per document</td>
+      </tr>
+      <tr>
+        <td>Malpractice defense documentation</td>
+        <td class="no">No evidence of due diligence</td>
+        <td class="yes">Timestamped proof of review process</td>
+      </tr>
+      <tr>
+        <td>Cost</td>
+        <td>$0</td>
+        <td class="yes">$0 — open source (MIT license)</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- FAQ -->
+<section class="content-section" id="faq">
+  <h2>Frequently Asked Questions</h2>
+
+  <div class="faq-item">
+    <h3>How do I prove I reviewed AI-generated legal documents?</h3>
+    <p>LegalSeal provides cryptographic attorney attestation — a SHA-256 hash of the document combined with the attorney's bar number and timestamp creates a tamper-proof verification receipt proving the attorney reviewed the AI-generated output before filing. The receipt is downloadable as a JSON file and can be submitted to courts or retained in compliance records.</p>
+  </div>
+
+  <div class="faq-item">
+    <h3>What protects lawyers from AI malpractice claims?</h3>
+    <p>Documenting attorney review of AI output is critical for malpractice defense. LegalSeal creates a cryptographic seal linking the attorney's bar number to the specific document they reviewed, establishing a verifiable chain of accountability that demonstrates due diligence. This documentation shows that the attorney fulfilled their professional obligation to verify AI work product before relying on it.</p>
+  </div>
+
+  <div class="faq-item">
+    <h3>How do I document attorney review of AI output?</h3>
+    <p>LegalSeal generates a verification receipt containing the document's SHA-256 hash, attorney name, bar number, jurisdiction, attestation statement, and UTC timestamp. This receipt serves as cryptographic proof that a licensed attorney reviewed the document at a specific point in time. The document itself is never stored — only its hash — ensuring client confidentiality.</p>
+  </div>
+
+  <div class="faq-item">
+    <h3>Is there a standard for verifying AI legal documents?</h3>
+    <p>The LegalSeal Protocol is an open-source standard (MIT license) for attorney attestation of AI-generated legal documents. It uses SHA-256 cryptographic hashing to create tamper-proof verification receipts that prove human review occurred. The protocol specification is publicly available on <a href="https://github.com/KevGrandWizard247/legalseal-protocol-" target="_blank" rel="noopener">GitHub</a> and designed for integration with existing legal workflows and tools.</p>
+  </div>
+
+  <div class="faq-item">
+    <h3>How do I avoid sanctions for AI hallucinations in legal filings?</h3>
+    <p>Over 716 lawyers have been sanctioned for unverified AI output, primarily for filing documents containing fabricated case citations generated by tools like ChatGPT. LegalSeal helps by requiring attorneys to formally attest they reviewed the document, creating a cryptographic record of that review that can be presented to courts as proof of due diligence under Rule 11 and state equivalents.</p>
+  </div>
+</section>
+
 <footer class="footer">
-  LegalSeal Protocol v1.0 &mdash; <a href="https://github.com/KevGrandWizard247/legalseal-protocol-" target="_blank">Open Source</a>
+  LegalSeal Protocol v1.0 &mdash; <a href="https://github.com/KevGrandWizard247/legalseal-protocol-" target="_blank" rel="noopener">Open Source (MIT License)</a> &mdash; <a href="#what-is-legalseal">About</a> &mdash; <a href="#faq">FAQ</a>
 </footer>
 
 <script>
