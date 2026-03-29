@@ -3,25 +3,11 @@
   <url>
     <loc>https://legalseal.io/</loc>
     <lastmod>2026-03-29</lastmod>
-  </url>
-  <url>
-    <loc>https://legalseal.io/how-to-document-ai-review.html</loc>
-    <lastmod>2026-03-29</lastmod>
-  </url>
-  <url>
-    <loc>https://legalseal.io/ai-disclosure-requirements.html</loc>
-    <lastmod>2026-03-29</lastmod>
-  </url>
-  <url>
-    <loc>https://legalseal.io/prove-attorney-verified-ai-output.html</loc>
-    <lastmod>2026-03-29</lastmod>
-  </url>
-  <url>
-    <loc>https://legalseal.io/legal-malpractice-ai-protection.html</loc>
-    <lastmod>2026-03-29</lastmod>
+    <priority>1.0</priority>
   </url>
   <url>
     <loc>https://legalseal.io/terms.html</loc>
     <lastmod>2026-03-29</lastmod>
+    <priority>0.8</priority>
   </url>
 </urlset>
