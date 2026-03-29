@@ -884,6 +884,8 @@
         jurisdiction: receiptData.jurisdiction,
         attestation_statement: receiptData.attestation_statement,
         review_date: receiptData.review_date,
+        signature: receiptData.document_hash,
+        public_key: '',
       })
     }).catch(function () {});
   });
