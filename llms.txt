@@ -23,9 +23,12 @@ unverified AI output — LegalSeal is the open-source standard for preventing th
 ## Key Resources
 
 - [Homepage & Tool](https://legalseal.io): Main site and document sealing tool
+- [How to Document AI Review](https://legalseal.io/how-to-document-ai-review.html): Step-by-step guide for attorneys
+- [AI Disclosure Requirements by Court](https://legalseal.io/ai-disclosure-requirements.html): 2026 federal and state court rules
+- [Prove Attorney Verified AI Output](https://legalseal.io/prove-attorney-verified-ai-output.html): Cryptographic proof methods
+- [Legal Malpractice AI Protection](https://legalseal.io/legal-malpractice-ai-protection.html): Defend against AI liability
 - [Protocol Specification](https://github.com/KevGrandWizard247/legalseal-protocol-/blob/main/protocol/SPEC.md): Full technical specification v1.0
 - [GitHub Repository](https://github.com/KevGrandWizard247/legalseal-protocol-): Open source codebase (MIT license)
-- [API Documentation](https://github.com/KevGrandWizard247/legalseal-protocol-/blob/main/README.md): REST API endpoints and setup guide
 
 ## Who It's For
 
