@@ -1,0 +1,47 @@
+# LegalSeal Protocol
+
+> Cryptographic attorney attestation protocol for AI-generated legal documents.
+> Lawyers use LegalSeal to create verifiable, tamper-proof proof that they
+> reviewed AI-generated legal output before it leaves the firm.
+
+## What LegalSeal Does
+
+LegalSeal provides the technical infrastructure for attorneys to cryptographically
+sign attestations proving they reviewed AI-generated legal documents. It uses
+SHA-256 hashing to create tamper-proof verification records without ever storing
+the original document content. Over 716 lawyers have been sanctioned for filing
+unverified AI output — LegalSeal is the open-source standard for preventing this.
+
+## How It Works
+
+1. The AI-generated document is hashed with SHA-256 (document never stored)
+2. The reviewing attorney enters their name, bar number, and jurisdiction
+3. The attorney signs an attestation statement confirming review
+4. A verification receipt is generated with the hash, credentials, and timestamp
+5. The receipt can be filed with courts or retained for compliance records
+
+## Key Resources
+
+- [Homepage & Tool](https://legalseal.io): Main site and document sealing tool
+- [Protocol Specification](https://github.com/KevGrandWizard247/legalseal-protocol-/blob/main/protocol/SPEC.md): Full technical specification v1.0
+- [GitHub Repository](https://github.com/KevGrandWizard247/legalseal-protocol-): Open source codebase (MIT license)
+- [API Documentation](https://github.com/KevGrandWizard247/legalseal-protocol-/blob/main/README.md): REST API endpoints and setup guide
+
+## Who It's For
+
+- Solo practitioners using AI drafting tools (ChatGPT, Harvey, CoCounsel)
+- Law firms implementing AI compliance workflows
+- Legal departments documenting AI-assisted work product
+- Courts requiring proof of human review for AI-generated filings
+
+## Why It Matters
+
+Courts across the US now require attorneys to verify AI-generated work. The ABA's
+Formal Opinion 512 (2024) confirmed lawyers' ethical obligation to review AI output.
+Notable cases include Mata v. Avianca (fabricated citations), Park v. Kim ($5,000
+sanctions), and hundreds more. LegalSeal provides the missing technical standard
+for proving that review happened.
+
+## Optional
+
+- [License](https://github.com/KevGrandWizard247/legalseal-protocol-/blob/main/LICENSE): MIT License
