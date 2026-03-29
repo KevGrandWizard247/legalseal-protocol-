@@ -24,10 +24,11 @@ app.post('/attestations', async (req, res) => {
     review_date,
     attestation_statement,
     signature,
+    public_key,
   } = req.body;
 
-  if (!document_hash || !attorney_name || !bar_number || !jurisdiction || !signature) {
-    return res.status(400).json({ error: 'Missing required fields: document_hash, attorney_name, bar_number, jurisdiction, signature' });
+  if (!document_hash || !attorney_name || !bar_number || !jurisdiction || !signature || !public_key) {
+    return res.status(400).json({ error: 'Missing required fields: document_hash, attorney_name, bar_number, jurisdiction, signature, public_key' });
   }
 
   const { data, error } = await supabase
@@ -40,6 +41,7 @@ app.post('/attestations', async (req, res) => {
       review_date: review_date || new Date().toISOString(),
       attestation_statement: attestation_statement || `I, ${attorney_name}, have reviewed this AI-generated legal document and attest to its accuracy and compliance.`,
       signature,
+      public_key,
     })
     .select()
     .single();

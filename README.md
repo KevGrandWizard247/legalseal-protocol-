@@ -12,6 +12,10 @@ Cryptographic attorney attestation protocol for AI-generated legal output.
 4. **Register** — The signed attestation is stored in a Supabase verification registry
 5. **Verify** — Anyone can look up a document hash and verify the attorney's signature
 
+## How It Works In Practice
+
+A law firm using Harvey or another legal AI tool generates a draft contract, memo, or brief. Before that document leaves the firm, a licensed attorney reviews it and triggers LegalSeal through the firm's document management system. LegalSeal hashes the final document, builds a structured attestation containing the attorney's name, bar number, and jurisdiction, and signs it with the attorney's private key. The signed attestation is registered in the verification registry — creating a permanent, cryptographic record that a specific attorney reviewed that exact document at a specific point in time. Opposing counsel, regulators, or clients can later verify the attestation by looking up the document hash, confirming the signature is valid, and checking that the attesting attorney is a member in good standing. The document itself is never stored or transmitted — only its hash — preserving attorney-client privilege while still proving human review occurred.
+
 ## Quick Start
 
 ```bash
@@ -103,6 +107,7 @@ CREATE TABLE verifications (
   review_date TIMESTAMPTZ DEFAULT now(),
   attestation_statement TEXT,
   signature TEXT NOT NULL,
+  public_key TEXT NOT NULL,
   created_at TIMESTAMPTZ DEFAULT now()
 );
 
@@ -127,4 +132,4 @@ CREATE INDEX idx_verifications_bar ON verifications (bar_number);
 
 ## License
 
-ISC
+MIT

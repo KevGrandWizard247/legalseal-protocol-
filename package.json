@@ -8,7 +8,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "@supabase/supabase-js": "^2.100.1",
     "dotenv": "^17.3.1",
