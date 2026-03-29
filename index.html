@@ -635,11 +635,16 @@
 <!-- Verify -->
 <section class="tool" id="verify">
   <h2>Verify a Document</h2>
-  <p class="tool-sub">Look up an existing attestation in the public registry by document hash.</p>
+  <p class="tool-sub">Upload or paste a document to check if an attorney has attested to it.</p>
 
   <div class="form-group">
-    <label>Document Hash (SHA-256)</label>
-    <input type="text" id="verify-hash" placeholder="Enter document hash to verify...">
+    <label>Upload Document (.txt, .docx, .pdf)</label>
+    <input type="file" id="verify-file-input" accept=".txt,.docx,.pdf">
+  </div>
+  <div class="input-divider">or paste text directly</div>
+  <div class="form-group">
+    <label>Document Text</label>
+    <textarea id="verify-doc-text" placeholder="Paste document content here..."></textarea>
   </div>
   <button class="submit-btn" id="verify-btn" style="background: #1a73e8;">Verify Document</button>
 
@@ -902,12 +907,24 @@
   const verifyTitle = document.getElementById('verify-title');
   const verifyResultHeader = document.getElementById('verify-result-header');
 
+  const verifyFileInput = document.getElementById('verify-file-input');
+  const verifyDocText = document.getElementById('verify-doc-text');
+
   verifyBtn.addEventListener('click', async function () {
-    const hash = document.getElementById('verify-hash').value.trim();
-    if (!hash) {
-      alert('Please enter a document hash.');
+    let verifyContent = '';
+    if (verifyFileInput.files.length > 0) {
+      verifyContent = await readFile(verifyFileInput.files[0]);
+    } else {
+      verifyContent = verifyDocText.value.trim();
+    }
+
+    if (!verifyContent) {
+      alert('Please upload a document or paste text to verify.');
       return;
     }
+
+    const hash = await sha256(verifyContent);
+    console.log('[LegalSeal] Querying hash:', hash);
 
     verifyBtn.disabled = true;
     verifyBtn.textContent = 'Searching...';
