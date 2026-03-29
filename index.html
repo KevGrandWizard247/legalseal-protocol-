@@ -312,6 +312,10 @@
 
   .download-btn:hover { background: #00c851; color: #0a0a0a; }
 
+  .not-verified { background: #ff4444; }
+  .receipt.not-found .receipt-header { background: #1f0d0d; border-bottom-color: #3a1a1a; }
+  .receipt.not-found { border-color: #3a1a1a; }
+
   /* --- Footer --- */
   .footer {
     text-align: center;
@@ -627,6 +631,26 @@
   </div>
 </section>
 
+<!-- Verify -->
+<section class="tool" id="verify">
+  <h2>Verify a Document</h2>
+  <p class="tool-sub">Look up an existing attestation in the public registry by document hash.</p>
+
+  <div class="form-group">
+    <label>Document Hash (SHA-256)</label>
+    <input type="text" id="verify-hash" placeholder="Enter document hash to verify...">
+  </div>
+  <button class="submit-btn" id="verify-btn" style="background: #1a73e8;">Verify Document</button>
+
+  <div class="receipt" id="verify-result" style="margin-top: 2rem;">
+    <div class="receipt-header" id="verify-result-header">
+      <span class="verified-badge" id="verify-badge">Verified</span>
+      <span class="receipt-header-text" id="verify-title">Attestation Found</span>
+    </div>
+    <div class="receipt-body" id="verify-result-body"></div>
+  </div>
+</section>
+
 <!-- What Is LegalSeal -->
 <section class="content-section" id="what-is-legalseal">
   <h2>What Is Attorney Attestation for AI-Generated Documents?</h2>
@@ -748,6 +772,9 @@
 
 <script>
 (function () {
+  const SUPABASE_URL = 'https://mtdweuwhkmeezvrqaegc.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im10ZHdldXdoa21lZXp2cnFhZWdjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3OTYzMDEsImV4cCI6MjA5MDM3MjMwMX0.axhpDMx8Q_1QtHNVpEAXAuma-xGMxhq5GYyqvc7mJIc';
+
   const form = document.getElementById('seal-form');
   const fileInput = document.getElementById('file-input');
   const docText = document.getElementById('doc-text');
@@ -834,6 +861,25 @@
 
     receipt.classList.add('visible');
     receipt.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    // POST to Supabase registry
+    fetch(SUPABASE_URL + '/rest/v1/verifications', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPABASE_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_KEY,
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({
+        document_hash: receiptData.document_hash,
+        attorney_name: receiptData.attorney_name,
+        bar_number: receiptData.bar_number,
+        jurisdiction: receiptData.jurisdiction,
+        attestation_statement: receiptData.attestation_statement,
+        review_date: receiptData.review_date,
+      })
+    }).catch(function () {});
   });
 
   downloadBtn.addEventListener('click', function () {
@@ -845,6 +891,77 @@
     a.download = 'legalseal-receipt-' + receiptData.document_hash.substring(0, 8) + '.json';
     a.click();
     URL.revokeObjectURL(url);
+  });
+
+  // --- Verify ---
+  const verifyBtn = document.getElementById('verify-btn');
+  const verifyResult = document.getElementById('verify-result');
+  const verifyResultBody = document.getElementById('verify-result-body');
+  const verifyBadge = document.getElementById('verify-badge');
+  const verifyTitle = document.getElementById('verify-title');
+  const verifyResultHeader = document.getElementById('verify-result-header');
+
+  verifyBtn.addEventListener('click', async function () {
+    const hash = document.getElementById('verify-hash').value.trim();
+    if (!hash) {
+      alert('Please enter a document hash.');
+      return;
+    }
+
+    verifyBtn.disabled = true;
+    verifyBtn.textContent = 'Searching...';
+
+    try {
+      const res = await fetch(
+        SUPABASE_URL + '/rest/v1/verifications?document_hash=eq.' + encodeURIComponent(hash) + '&order=created_at.desc',
+        {
+          headers: {
+            'apikey': SUPABASE_KEY,
+            'Authorization': 'Bearer ' + SUPABASE_KEY
+          }
+        }
+      );
+      const data = await res.json();
+
+      if (data && data.length > 0) {
+        verifyResult.className = 'receipt visible';
+        verifyResultHeader.style.background = '#0d1f0d';
+        verifyBadge.className = 'verified-badge';
+        verifyBadge.textContent = 'Verified';
+        verifyTitle.textContent = data.length + ' Attestation' + (data.length > 1 ? 's' : '') + ' Found';
+
+        verifyResultBody.innerHTML = data.map(function (a) {
+          var fields = [
+            ['Attorney', a.attorney_name],
+            ['Bar Number', a.bar_number],
+            ['Jurisdiction', a.jurisdiction],
+            ['Statement', a.attestation_statement],
+            ['Review Date', a.review_date ? new Date(a.review_date).toISOString().replace('T', ' ').replace(/\.\d{3}Z$/, ' UTC') : 'N/A'],
+          ];
+          return fields.map(function (f) {
+            return '<div class="receipt-row"><div class="receipt-label">' + f[0] + '</div><div class="receipt-value">' + f[1] + '</div></div>';
+          }).join('');
+        }).join('<hr style="border: none; border-top: 1px solid #1e1e1e; margin: 1rem 0;">');
+      } else {
+        verifyResult.className = 'receipt visible not-found';
+        verifyResultHeader.style.background = '#1f0d0d';
+        verifyBadge.className = 'verified-badge not-verified';
+        verifyBadge.textContent = 'Not Verified';
+        verifyTitle.textContent = 'No Attestations Found';
+        verifyResultBody.innerHTML = '<div class="receipt-row"><div class="receipt-value" style="color: #888;">No attorney has registered an attestation for this document hash.</div></div>';
+      }
+    } catch (err) {
+      verifyResult.className = 'receipt visible not-found';
+      verifyResultHeader.style.background = '#1f0d0d';
+      verifyBadge.className = 'verified-badge not-verified';
+      verifyBadge.textContent = 'Error';
+      verifyTitle.textContent = 'Verification Failed';
+      verifyResultBody.innerHTML = '<div class="receipt-row"><div class="receipt-value" style="color: #888;">Could not reach the verification registry. Please try again.</div></div>';
+    }
+
+    verifyBtn.disabled = false;
+    verifyBtn.textContent = 'Verify Document';
+    verifyResult.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 })();
 </script>
