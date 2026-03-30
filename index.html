@@ -313,6 +313,70 @@
 
   .download-btn:hover { background: #00c851; color: #0a0a0a; }
 
+  /* --- Sandbox --- */
+  .sandbox-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    background: #111;
+    border: 1px solid #1e1e1e;
+    border-radius: 6px;
+    margin-bottom: 1.5rem;
+    cursor: pointer;
+    font-size: 0.85rem;
+    color: #999;
+    user-select: none;
+  }
+
+  .sandbox-toggle input { cursor: pointer; }
+
+  .sandbox-toggle .sandbox-desc {
+    font-size: 0.75rem;
+    color: #666;
+    display: block;
+    margin-top: 0.15rem;
+  }
+
+  .tool.sandbox-active {
+    border: 1px solid #ff444444;
+    border-radius: 10px;
+    position: relative;
+  }
+
+  .sandbox-banner {
+    display: none;
+    background: #ff4444;
+    color: #fff;
+    text-align: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 0.35rem;
+    border-radius: 8px 8px 0 0;
+    margin: -4rem 0 2rem;
+  }
+
+  .tool.sandbox-active .sandbox-banner { display: block; }
+
+  .receipt.test-receipt { position: relative; overflow: hidden; }
+  .receipt.test-receipt::after {
+    content: 'TEST VERIFICATION';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-30deg);
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: rgba(255, 68, 68, 0.12);
+    letter-spacing: 0.1em;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  .test-badge { background: #ff8800; }
+
   .not-verified { background: #ff4444; }
   .receipt.not-found .receipt-header { background: #1f0d0d; border-bottom-color: #3a1a1a; }
   .receipt.not-found { border-color: #3a1a1a; }
@@ -576,6 +640,16 @@
   <h2>Seal a Document</h2>
   <p class="tool-sub">Generate a cryptographic verification receipt for your reviewed document.</p>
 
+  <div class="sandbox-banner" id="sandbox-banner">Sandbox Mode Active — Test Verifications Only</div>
+
+  <label class="sandbox-toggle">
+    <input type="checkbox" id="sandbox-check">
+    <div>
+      <strong style="color: #ccc;">Sandbox Mode</strong>
+      <span class="sandbox-desc">Test with fake details. Verifications marked as TEST and excluded from live registry.</span>
+    </div>
+  </label>
+
   <form id="seal-form">
     <div class="form-group">
       <label>Upload Document (.txt, .docx, .pdf)</label>
@@ -787,7 +861,20 @@
   const receipt = document.getElementById('receipt');
   const receiptBody = document.getElementById('receipt-body');
   const downloadBtn = document.getElementById('download-btn');
+  const sandboxCheck = document.getElementById('sandbox-check');
+  const toolSection = document.getElementById('tool');
+  const submitBtn = document.getElementById('submit-btn');
   let receiptData = null;
+
+  sandboxCheck.addEventListener('change', function () {
+    if (sandboxCheck.checked) {
+      toolSection.classList.add('sandbox-active');
+      submitBtn.textContent = 'Generate Test Seal';
+    } else {
+      toolSection.classList.remove('sandbox-active');
+      submitBtn.textContent = 'Generate LegalSeal';
+    }
+  });
 
   async function sha256(text) {
     const encoder = new TextEncoder();
@@ -836,6 +923,7 @@
 
     const documentHash = await sha256(content);
     const timestamp = new Date();
+    const isSandbox = sandboxCheck.checked;
 
     receiptData = {
       protocol: 'LegalSeal v1.0',
@@ -846,6 +934,7 @@
       attestation_statement: attestation,
       review_date: timestamp.toISOString(),
       sealed_at: formatTimestamp(timestamp),
+      sandbox: isSandbox,
     };
 
     const fields = [
@@ -857,6 +946,7 @@
       ['Statement', receiptData.attestation_statement],
       ['Sealed At', receiptData.sealed_at],
     ];
+    if (isSandbox) fields.unshift(['Mode', 'TEST VERIFICATION']);
 
     receiptBody.innerHTML = fields.map(([label, value, isHash]) =>
       '<div class="receipt-row">' +
@@ -865,7 +955,7 @@
       '</div>'
     ).join('');
 
-    receipt.classList.add('visible');
+    receipt.className = 'receipt visible' + (isSandbox ? ' test-receipt' : '');
     receipt.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
     // POST to Supabase registry
@@ -886,6 +976,7 @@
         review_date: receiptData.review_date,
         signature: receiptData.document_hash,
         public_key: '',
+        sandbox: isSandbox,
       })
     }).catch(function () {});
   });
@@ -944,20 +1035,23 @@
       const data = await res.json();
 
       if (data && data.length > 0) {
-        verifyResult.className = 'receipt visible';
+        var hasTestRecords = data.some(function (a) { return a.sandbox; });
+        verifyResult.className = 'receipt visible' + (hasTestRecords ? ' test-receipt' : '');
         verifyResultHeader.style.background = '#0d1f0d';
-        verifyBadge.className = 'verified-badge';
-        verifyBadge.textContent = 'Verified';
+        verifyBadge.className = 'verified-badge' + (hasTestRecords ? ' test-badge' : '');
+        verifyBadge.textContent = hasTestRecords ? 'TEST MODE' : 'Verified';
         verifyTitle.textContent = data.length + ' Attestation' + (data.length > 1 ? 's' : '') + ' Found';
 
         verifyResultBody.innerHTML = data.map(function (a) {
-          var fields = [
+          var fields = [];
+          if (a.sandbox) fields.push(['Mode', 'TEST VERIFICATION']);
+          fields.push(
             ['Attorney', a.attorney_name],
             ['Bar Number', a.bar_number],
             ['Jurisdiction', a.jurisdiction],
             ['Statement', a.attestation_statement],
-            ['Review Date', a.review_date ? new Date(a.review_date).toISOString().replace('T', ' ').replace(/\.\d{3}Z$/, ' UTC') : 'N/A'],
-          ];
+            ['Review Date', a.review_date ? new Date(a.review_date).toISOString().replace('T', ' ').replace(/\.\d{3}Z$/, ' UTC') : 'N/A']
+          );
           return fields.map(function (f) {
             return '<div class="receipt-row"><div class="receipt-label">' + f[0] + '</div><div class="receipt-value">' + f[1] + '</div></div>';
           }).join('');
